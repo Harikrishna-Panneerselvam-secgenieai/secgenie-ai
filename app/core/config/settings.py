@@ -1,33 +1,33 @@
 from functools import lru_cache
 
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+from .api import APISettings
+from .app import AppSettings
+from .database import DatabaseSettings
+from .llm import LLMSettings
+from .logging import LoggingSettings
+from .redis import RedisSettings
+from .security import JWTSettings, SecuritySettings
 
 
 class Settings(BaseSettings):
-    """Application settings loaded from environment variables."""
+    """Centralized application settings."""
 
-    # Application
-    app_name: str = "SecGenie AI"
-    app_version: str = "0.1.0"
-    app_env: str = "development"
-    debug: bool = False
-
-    # Server
-    host: str = "127.0.0.1"
-    port: int = 8000
-
-    # Database
-    database_url: str = ""
-
-    # Redis
-    redis_url: str = ""
-
-    # JWT
-    jwt_secret_key: str = ""
+    app: AppSettings = Field(default_factory=AppSettings)
+    database: DatabaseSettings = Field(default_factory=DatabaseSettings)
+    redis: RedisSettings = Field(default_factory=RedisSettings)
+    security: SecuritySettings = Field(default_factory=SecuritySettings)
+    jwt: JWTSettings = Field(default_factory=JWTSettings)
+    logging: LoggingSettings = Field(default_factory=LoggingSettings)
+    llm: LLMSettings = Field(default_factory=LLMSettings)
+    api: APISettings = Field(default_factory=APISettings)
 
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
+        env_nested_delimiter="__",
         case_sensitive=False,
         extra="ignore",
     )
@@ -35,7 +35,7 @@ class Settings(BaseSettings):
 
 @lru_cache
 def get_settings() -> Settings:
-    """Return a cached Settings instance."""
+    """Return the cached application settings."""
     return Settings()
 
 

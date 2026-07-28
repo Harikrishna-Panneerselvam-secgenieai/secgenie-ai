@@ -9,8 +9,13 @@ from fastapi import FastAPI
 from app.api.v1 import router as api_router
 from app.core.config import settings
 from app.core.config.validators import validate_settings
-from app.core.middleware import register_middleware
 from app.core.exceptions import register_exception_handlers
+from app.core.middleware import register_middleware
+from app.core.logging import setup_logging, get_logger
+
+
+# Create module logger
+logger = get_logger(__name__)
 
 
 @asynccontextmanager
@@ -19,22 +24,38 @@ async def lifespan(application: FastAPI):
     Application startup and shutdown lifecycle.
     """
 
-    # Startup validation
+    # Startup
+    logger.info("Starting SecGenie.ai application")
+
+    # Validate application configuration
     validate_settings(settings)
 
-    # Future startup tasks:
+    logger.info("Application configuration validation completed")
+
+
+    # Future startup initialization:
+    #
     # - Initialize database connection pool
-    # - Initialize Redis
-    # - Load AI providers
-    # - Register agents
+    # - Initialize Redis connection
+    # - Load LLM providers
+    # - Initialize vector database
+    # - Register AI agents
+    # - Initialize background workers
+
 
     yield
 
-    # Shutdown logic:
+
+    # Shutdown
+    logger.info("Stopping SecGenie.ai application")
+
+
+    # Future shutdown cleanup:
+    #
     # - Close database connections
     # - Close Redis connections
     # - Stop background workers
-    # - Cleanup resources
+    # - Release external API clients
 
 
 def create_app() -> FastAPI:
@@ -43,6 +64,12 @@ def create_app() -> FastAPI:
 
     Creates and configures the FastAPI application.
     """
+
+    # Initialize logging first
+    setup_logging()
+
+    logger.info("Creating FastAPI application instance")
+
 
     application = FastAPI(
         title="SecGenie.ai",
@@ -69,6 +96,10 @@ def create_app() -> FastAPI:
 
     @application.get("/")
     async def root():
+        """
+        Application root endpoint.
+        """
+
         return {
             "application": "SecGenie.ai",
             "status": "running",
@@ -78,12 +109,19 @@ def create_app() -> FastAPI:
 
     @application.get("/health")
     async def health():
+        """
+        Application health check endpoint.
+        """
+
         return {
             "status": "healthy",
         }
 
 
+    logger.info("FastAPI application created successfully")
+
     return application
 
 
+# Application entry point
 app = create_app()

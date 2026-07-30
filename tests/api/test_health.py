@@ -13,7 +13,7 @@ def test_root_endpoint():
 
     data = response.json()
 
-    assert data["application"] == "SecGenie.ai"
+    assert data["application"] == "SecGenie AI"
 
 
 def test_health_endpoint():

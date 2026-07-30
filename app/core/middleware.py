@@ -49,9 +49,20 @@ class LoggingContextMiddleware(BaseHTTPMiddleware):
         if correlation_id is None:
             correlation_id = generate_correlation_id()
 
-        # Store IDs in the logging context.
+        # ------------------------------------------------------------------
+        # Store IDs in logging context
+        # ------------------------------------------------------------------
         set_request_id(request_id)
         set_correlation_id(correlation_id)
+
+        # ------------------------------------------------------------------
+        # Store IDs on request.state
+        #
+        # This allows exception handlers, dependencies and routes to
+        # reliably access the IDs even if the logging context is cleared.
+        # ------------------------------------------------------------------
+        request.state.request_id = request_id
+        request.state.correlation_id = correlation_id
 
         # Placeholder until authentication is implemented.
         user = "anonymous"

@@ -2,9 +2,12 @@
 SecGenie.ai Application Entry Point
 """
 
+from __future__ import annotations
+from fastapi import Body
+from fastapi import Body, FastAPI, HTTPException
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 
 from app.api.v1 import router as api_router
 from app.core.config import settings
@@ -14,7 +17,6 @@ from app.core.logging import get_logger, setup_logging
 from app.core.middleware import register_middleware
 
 
-# Create module logger
 logger = get_logger(__name__)
 
 
@@ -24,13 +26,14 @@ async def lifespan(application: FastAPI):
     Application startup and shutdown lifecycle.
     """
 
-    # Startup
     logger.info("Starting SecGenie.ai application")
 
-    # Validate application configuration
+    # Validate configuration
     validate_settings(settings)
 
-    logger.info("Application configuration validation completed")
+    logger.info(
+        "Application configuration validation completed"
+    )
 
     # Future startup initialization:
     #
@@ -43,7 +46,6 @@ async def lifespan(application: FastAPI):
 
     yield
 
-    # Shutdown
     logger.info("Stopping SecGenie.ai application")
 
     # Future shutdown cleanup:
@@ -61,58 +63,99 @@ def create_app() -> FastAPI:
     Creates and configures the FastAPI application.
     """
 
+    # --------------------------------------------------------------
     # Initialize logging first
+    # --------------------------------------------------------------
     setup_logging()
 
-    logger.info("Creating FastAPI application instance")
+    logger.info(
+        "Creating FastAPI application instance"
+    )
 
     application = FastAPI(
-        title="SecGenie.ai",
-        description="AI Powered Multi-Agent Cybersecurity Investigation Platform",
-        version="0.1.0",
+        title=settings.app.app_name,
+        description=(
+            "AI Powered Multi-Agent Cybersecurity "
+            "Investigation Platform"
+        ),
+        version=settings.app.app_version,
+        docs_url="/docs"
+        if settings.api.docs_enabled
+        else None,
+        redoc_url="/redoc"
+        if settings.api.redoc_enabled
+        else None,
+        openapi_url="/openapi.json"
+        if settings.api.openapi_enabled
+        else None,
         lifespan=lifespan,
     )
 
+    # --------------------------------------------------------------
     # Register middleware
+    # --------------------------------------------------------------
     register_middleware(application)
 
+    # --------------------------------------------------------------
     # Register global exception handlers
+    # --------------------------------------------------------------
     register_exception_handlers(application)
 
+    # --------------------------------------------------------------
     # Register API routes
+    # --------------------------------------------------------------
     application.include_router(
         api_router,
-        prefix="/api/v1",
+        prefix=settings.api.prefix,
     )
 
-    @application.get("/")
-    async def root():
+    # --------------------------------------------------------------
+    # Root endpoint
+    # --------------------------------------------------------------
+    @application.get(
+        "/",
+        tags=["System"],
+    )
+    async def root() -> dict[str, str]:
         """
         Application root endpoint.
         """
+
         logger.info("Root endpoint called")
 
         return {
-            "application": "SecGenie.ai",
+            "application": settings.app.app_name,
             "status": "running",
-            "version": "0.1.0",
+            "version": settings.app.app_version,
         }
 
-    @application.get("/health")
-    async def health():
+    # --------------------------------------------------------------
+    # Health endpoint
+    # --------------------------------------------------------------
+    @application.get(
+        "/health",
+        tags=["System"],
+    )
+    async def health() -> dict[str, str]:
         """
         Application health check endpoint.
         """
+
         logger.info("Health endpoint called")
 
         return {
             "status": "healthy",
         }
 
-    logger.info("FastAPI application created successfully")
+    logger.info(
+        "FastAPI application created successfully"
+    )
 
     return application
 
 
+# ------------------------------------------------------------------
 # Application entry point
+# ------------------------------------------------------------------
+
 app = create_app()

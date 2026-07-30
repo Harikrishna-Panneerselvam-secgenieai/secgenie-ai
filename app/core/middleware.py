@@ -52,6 +52,9 @@ class LoggingContextMiddleware(BaseHTTPMiddleware):
         set_request_id(request_id)
         set_correlation_id(correlation_id)
 
+        # Placeholder until authentication is implemented.
+        user = "anonymous"
+
         logger.info(
             "HTTP request started",
             extra={
@@ -62,6 +65,7 @@ class LoggingContextMiddleware(BaseHTTPMiddleware):
                     if request.client
                     else None
                 ),
+                "user": user,
             },
         )
 
@@ -80,6 +84,7 @@ class LoggingContextMiddleware(BaseHTTPMiddleware):
                     "path": request.url.path,
                     "status_code": response.status_code,
                     "duration_ms": duration_ms,
+                    "user": user,
                 },
             )
 
@@ -101,6 +106,7 @@ class LoggingContextMiddleware(BaseHTTPMiddleware):
                     "method": request.method,
                     "path": request.url.path,
                     "duration_ms": duration_ms,
+                    "user": user,
                 },
             )
 

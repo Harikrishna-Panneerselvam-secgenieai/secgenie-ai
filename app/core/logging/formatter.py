@@ -24,6 +24,32 @@ class JsonFormatter(logging.Formatter):
     Formats log records as compact JSON.
     """
 
+    # Standard LogRecord attributes that should not be duplicated.
+    RESERVED_FIELDS = {
+        "name",
+        "msg",
+        "args",
+        "levelname",
+        "levelno",
+        "pathname",
+        "filename",
+        "module",
+        "exc_info",
+        "exc_text",
+        "stack_info",
+        "lineno",
+        "funcName",
+        "created",
+        "msecs",
+        "relativeCreated",
+        "thread",
+        "threadName",
+        "processName",
+        "process",
+        "message",
+        "taskName",
+    }
+
     def format(self, record: logging.LogRecord) -> str:
         """
         Convert a LogRecord into a JSON string.
@@ -44,6 +70,11 @@ class JsonFormatter(logging.Formatter):
             "correlation_id": get_correlation_id(),
             "execution_id": get_execution_id(),
         }
+
+        # Include custom fields passed through logger(..., extra={...}).
+        for key, value in record.__dict__.items():
+            if key not in self.RESERVED_FIELDS and key not in log_record:
+                log_record[key] = value
 
         # Include exception information when available.
         if record.exc_info:

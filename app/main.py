@@ -10,8 +10,8 @@ from app.api.v1 import router as api_router
 from app.core.config import settings
 from app.core.config.validators import validate_settings
 from app.core.exceptions import register_exception_handlers
+from app.core.logging import get_logger, setup_logging
 from app.core.middleware import register_middleware
-from app.core.logging import setup_logging, get_logger
 
 
 # Create module logger
@@ -32,7 +32,6 @@ async def lifespan(application: FastAPI):
 
     logger.info("Application configuration validation completed")
 
-
     # Future startup initialization:
     #
     # - Initialize database connection pool
@@ -42,13 +41,10 @@ async def lifespan(application: FastAPI):
     # - Register AI agents
     # - Initialize background workers
 
-
     yield
-
 
     # Shutdown
     logger.info("Stopping SecGenie.ai application")
-
 
     # Future shutdown cleanup:
     #
@@ -70,7 +66,6 @@ def create_app() -> FastAPI:
 
     logger.info("Creating FastAPI application instance")
 
-
     application = FastAPI(
         title="SecGenie.ai",
         description="AI Powered Multi-Agent Cybersecurity Investigation Platform",
@@ -78,14 +73,11 @@ def create_app() -> FastAPI:
         lifespan=lifespan,
     )
 
-
     # Register middleware
     register_middleware(application)
 
-
     # Register global exception handlers
     register_exception_handlers(application)
-
 
     # Register API routes
     application.include_router(
@@ -93,12 +85,12 @@ def create_app() -> FastAPI:
         prefix="/api/v1",
     )
 
-
     @application.get("/")
     async def root():
         """
         Application root endpoint.
         """
+        logger.info("Root endpoint called")
 
         return {
             "application": "SecGenie.ai",
@@ -106,17 +98,16 @@ def create_app() -> FastAPI:
             "version": "0.1.0",
         }
 
-
     @application.get("/health")
     async def health():
         """
         Application health check endpoint.
         """
+        logger.info("Health endpoint called")
 
         return {
             "status": "healthy",
         }
-
 
     logger.info("FastAPI application created successfully")
 

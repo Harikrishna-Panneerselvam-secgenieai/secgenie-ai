@@ -24,7 +24,7 @@ logger = get_logger(__name__)
 class LoggingContextMiddleware(BaseHTTPMiddleware):
     """
     Middleware that creates and manages the logging context
-    for every incoming HTTP request.
+    for every incoming HTTP request and measures execution time.
     """
 
     async def dispatch(
@@ -33,7 +33,8 @@ class LoggingContextMiddleware(BaseHTTPMiddleware):
         call_next: Callable[[Request], Response],
     ) -> Response:
         """
-        Process a request and enrich all logs with request context.
+        Process a request, measure execution time,
+        and enrich all logs with request context.
         """
 
         # Start measuring request duration.
@@ -60,18 +61,16 @@ class LoggingContextMiddleware(BaseHTTPMiddleware):
             extra={
                 "method": request.method,
                 "path": request.url.path,
-                "client": (
-                    request.client.host
-                    if request.client
-                    else None
-                ),
+                "client": request.client.host if request.client else None,
                 "user": user,
             },
         )
 
         try:
+            # Process the request.
             response = await call_next(request)
 
+            # Calculate execution time.
             duration_ms = round(
                 (time.perf_counter() - start_time) * 1000,
                 2,
@@ -91,6 +90,9 @@ class LoggingContextMiddleware(BaseHTTPMiddleware):
             # Return identifiers to the client.
             response.headers["X-Request-ID"] = request_id
             response.headers["X-Correlation-ID"] = correlation_id
+
+            # Return execution time to the client.
+            response.headers["X-Execution-Time"] = f"{duration_ms} ms"
 
             return response
 

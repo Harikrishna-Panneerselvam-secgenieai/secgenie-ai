@@ -1,12 +1,12 @@
-"""SQLAlchemy declarative base."""
+"""SQLAlchemy declarative base for all ORM models."""
 
 from sqlalchemy.orm import DeclarativeBase
 
 from app.database.models.mixins import (
-    UUIDMixin,
-    TimestampMixin,
     AuditMixin,
     SoftDeleteMixin,
+    TimestampMixin,
+    UUIDMixin,
 )
 
 
@@ -18,7 +18,13 @@ class Base(
     DeclarativeBase,
 ):
     """
-    Base class for all database models.
+    Base class for all SQLAlchemy ORM models.
+
+    Provides:
+    - UUID primary key
+    - Created/updated timestamps
+    - Audit fields
+    - Soft delete functionality
     """
 
     pass

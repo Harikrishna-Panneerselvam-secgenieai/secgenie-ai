@@ -1,7 +1,9 @@
 """Reusable SQLAlchemy model mixins."""
 
+from __future__ import annotations
+
 import uuid
-from datetime import datetime
+from datetime import UTC, datetime
 from uuid import UUID
 
 from sqlalchemy import DateTime, UUID as SQLUUID, func
@@ -58,10 +60,40 @@ class AuditMixin:
 
 class SoftDeleteMixin:
     """
-    Provides soft delete support.
+    Provides logical (soft) delete functionality.
+
+    Instead of physically removing records from the database,
+    records are marked as deleted by setting the deleted_at timestamp.
     """
 
     deleted_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True),
         nullable=True,
+        default=None,
+        index=True,
+        doc="Timestamp when the record was soft deleted.",
     )
+
+    @property
+    def is_deleted(self) -> bool:
+        """
+        Returns True if the record has been soft deleted.
+        """
+        return self.deleted_at is not None
+
+    def soft_delete(self) -> None:
+        """
+        Soft delete the record.
+
+        Safe to call multiple times.
+        """
+        if self.deleted_at is None:
+            self.deleted_at = datetime.now(UTC)
+
+    def restore(self) -> None:
+        """
+        Restore a previously soft-deleted record.
+
+        Safe to call multiple times.
+        """
+        self.deleted_at = None

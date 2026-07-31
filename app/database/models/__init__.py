@@ -1,5 +1,4 @@
 from app.database.models.base import Base
-from app.database.models.investigation import Investigation
 from app.database.models.mixins import (
     UUIDMixin,
     TimestampMixin,
@@ -13,5 +12,4 @@ __all__ = [
     "TimestampMixin",
     "AuditMixin",
     "SoftDeleteMixin",
-    "Investigation",
 ]

@@ -1,20 +1,18 @@
-"""Reusable SQLAlchemy model mixins."""
+"""
+Reusable SQLAlchemy model mixins.
+"""
 
 from __future__ import annotations
 
 import uuid
-from datetime import datetime
-from datetime import timezone
+from datetime import datetime, timezone
 
-from sqlalchemy import Boolean
-from sqlalchemy import DateTime
-from sqlalchemy import String
-from sqlalchemy import func
+from sqlalchemy import Boolean, DateTime, String, func
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import Mapped
-from sqlalchemy.orm import mapped_column
+from sqlalchemy.orm import Mapped, declarative_mixin, mapped_column
 
 
+@declarative_mixin
 class UUIDPrimaryKeyMixin:
     """
     Adds a UUID primary key to a model.
@@ -27,6 +25,7 @@ class UUIDPrimaryKeyMixin:
     )
 
 
+@declarative_mixin
 class TimestampMixin:
     """
     Automatically tracks record creation and updates.
@@ -46,6 +45,7 @@ class TimestampMixin:
     )
 
 
+@declarative_mixin
 class AuditMixin:
     """
     Tracks which user created and last updated the record.
@@ -62,39 +62,53 @@ class AuditMixin:
     )
 
 
+@declarative_mixin
 class SoftDeleteMixin:
     """
     Adds soft delete support.
+
+    Provides:
+    - logical deletion
+    - restore capability
+    - deletion tracking
     """
 
     is_deleted: Mapped[bool] = mapped_column(
         Boolean,
         nullable=False,
         default=False,
+        server_default="false",
     )
 
     deleted_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True),
         nullable=True,
+        default=None,
     )
 
     deleted_by: Mapped[str | None] = mapped_column(
         String(255),
         nullable=True,
+        default=None,
     )
 
-    def soft_delete(self, deleted_by: str | None = None) -> None:
+    def soft_delete(
+        self,
+        deleted_by: str | None = None,
+    ) -> None:
         """
-        Mark the record as deleted.
+        Mark record as deleted.
         """
+
         self.is_deleted = True
         self.deleted_at = datetime.now(timezone.utc)
         self.deleted_by = deleted_by
 
     def restore(self) -> None:
         """
-        Restore a previously soft deleted record.
+        Restore deleted record.
         """
+
         self.is_deleted = False
         self.deleted_at = None
         self.deleted_by = None

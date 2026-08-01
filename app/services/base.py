@@ -32,7 +32,6 @@ from app.services.exceptions import (
     EntityNotFoundError,
 )
 
-
 ModelType = TypeVar("ModelType")
 RepositoryType = TypeVar("RepositoryType")
 

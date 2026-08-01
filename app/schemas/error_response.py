@@ -8,6 +8,8 @@ from typing import Any
 
 from pydantic import BaseModel, Field
 
+from app.schemas.responses import ResponseMetadata
+
 
 class ErrorDetail(BaseModel):
     """
@@ -47,7 +49,8 @@ class ErrorResponse(BaseModel):
 
     success: bool = Field(
         default=False,
-        description="Always false for error responses.",
     )
 
     error: ErrorDetail
+
+    metadata: ResponseMetadata | None = None

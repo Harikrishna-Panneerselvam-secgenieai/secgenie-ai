@@ -7,6 +7,10 @@ from fastapi import FastAPI, Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.middleware.cors import CORSMiddleware
 
+from app.core.constants.api import (
+    HEADER_CORRELATION_ID,
+    HEADER_REQUEST_ID,
+)
 from app.core.logging import get_logger
 from app.core.logging.context import (
     clear_context,
@@ -45,7 +49,7 @@ class LoggingContextMiddleware(BaseHTTPMiddleware):
 
         # Reuse the incoming correlation ID if provided,
         # otherwise generate a new one.
-        correlation_id = request.headers.get("X-Correlation-ID")
+        correlation_id = request.headers.get(HEADER_CORRELATION_ID)
         if correlation_id is None:
             correlation_id = generate_correlation_id()
 
@@ -99,8 +103,8 @@ class LoggingContextMiddleware(BaseHTTPMiddleware):
             )
 
             # Return identifiers to the client.
-            response.headers["X-Request-ID"] = request_id
-            response.headers["X-Correlation-ID"] = correlation_id
+            response.headers[HEADER_REQUEST_ID] = request_id
+            response.headers[HEADER_CORRELATION_ID] = correlation_id
 
             # Return execution time to the client.
             response.headers["X-Execution-Time"] = f"{duration_ms} ms"

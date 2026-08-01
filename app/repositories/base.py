@@ -206,15 +206,15 @@ class BaseRepository(Generic[ModelType]):
 
         await self.session.flush()
 
-async def refresh(
-    self,
-    instance: ModelType,
-) -> None:
-    """
-    Refresh model from database.
-    """
+    async def refresh(
+        self,
+        instance: ModelType,
+    ) -> None:
+        """
+        Refresh model from database.
+        """
 
-    await self.session.refresh(instance)
+        await self.session.refresh(instance)
 
 
     async def get_by_id(

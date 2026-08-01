@@ -103,12 +103,14 @@ class BaseRepository(Generic[ModelType]):
             f"(model={self.model_name})"
         )
 
-    async def create(self, **kwargs: Any) -> ModelType:
+    async def create(
+        self,
+        **kwargs: Any,
+    ) -> ModelType:
         """
         Create a new record.
-
-        The transaction is not committed automatically.
         """
+
         instance = self.model(**kwargs)
 
         self.session.add(instance)
@@ -117,6 +119,100 @@ class BaseRepository(Generic[ModelType]):
         await self.session.refresh(instance)
 
         return instance
+
+
+    async def update(
+        self,
+        instance: ModelType,
+        **kwargs: Any,
+    ) -> ModelType:
+        """
+        Update an existing model instance.
+        """
+
+        for field, value in kwargs.items():
+            setattr(instance, field, value)
+
+        await self.session.flush()
+        await self.session.refresh(instance)
+
+        return instance
+
+    async def delete(
+        self,
+        instance: ModelType,
+    ) -> None:
+        """
+        Permanently delete a model instance.
+        """
+
+        await self.session.delete(instance)
+
+        await self.session.flush()
+
+    async def soft_delete(
+        self,
+        instance: ModelType,
+    ) -> ModelType:
+        """
+        Soft delete a model instance.
+        """
+
+        if hasattr(instance, "soft_delete"):
+            instance.soft_delete()
+
+        await self.session.flush()
+        await self.session.refresh(instance)
+
+        return instance
+
+    async def restore(
+        self,
+        instance: ModelType,
+    ) -> ModelType:
+        """
+        Restore a soft deleted model.
+        """
+
+        if hasattr(instance, "restore"):
+            instance.restore()
+
+        await self.session.flush()
+        await self.session.refresh(instance)
+
+        return instance
+
+    async def commit(self) -> None:
+        """
+        Commit current transaction.
+        """
+
+        await self.session.commit()
+
+    async def rollback(self) -> None:
+        """
+        Roll back current transaction.
+        """
+
+        await self.session.rollback()
+
+    async def flush(self) -> None:
+        """
+        Flush pending changes.
+        """
+
+        await self.session.flush()
+
+async def refresh(
+    self,
+    instance: ModelType,
+) -> None:
+    """
+    Refresh model from database.
+    """
+
+    await self.session.refresh(instance)
+
 
     async def get_by_id(
         self,

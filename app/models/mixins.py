@@ -98,7 +98,14 @@ class SoftDeleteMixin:
     ) -> None:
         """
         Mark record as deleted.
+
+        This operation is idempotent.
+        Calling soft_delete() multiple times
+        preserves the original deletion timestamp.
         """
+
+        if self.is_deleted:
+            return
 
         self.is_deleted = True
         self.deleted_at = datetime.now(UTC)

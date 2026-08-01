@@ -22,9 +22,12 @@ from typing import Any, Generic, TypeVar
 from sqlalchemy import Select, asc, desc, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.database.models.base import Base
+from app.models.base import BaseModel
 
-ModelType = TypeVar("ModelType", bound=Base)
+ModelType = TypeVar(
+    "ModelType",
+    bound=BaseModel,
+)
 
 
 class BaseRepository(Generic[ModelType]):

@@ -9,10 +9,10 @@ from datetime import UTC, datetime
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column
 
-from app.database.models.base import Base
+from app.models.base import BaseModel
 
 
-class DummyModel(Base):
+class DummyModel(BaseModel):
     """Simple model used for testing SoftDeleteMixin."""
 
     __tablename__ = "dummy_model"

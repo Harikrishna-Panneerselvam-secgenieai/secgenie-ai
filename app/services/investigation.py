@@ -21,6 +21,7 @@ from app.schemas.investigation import (
     InvestigationCreate,
     InvestigationUpdate,
 )
+from app.schemas.pagination import PaginationParams
 from app.services.base import BaseService
 from app.services.exceptions import (
     InvalidStatusTransitionError,
@@ -145,17 +146,15 @@ class InvestigationService(BaseService):
 
     async def list_investigations(
         self,
-        *,
-        skip: int = 0,
-        limit: int = 50,
+        pagination: PaginationParams,
     ) -> Sequence[Investigation]:
         """
         Return paginated investigations.
         """
 
         return await self.repository.list(
-            skip=skip,
-            limit=limit,
+            offset=pagination.offset,
+            limit=pagination.limit,
         )
 
 

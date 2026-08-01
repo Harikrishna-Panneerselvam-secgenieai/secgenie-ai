@@ -3,12 +3,11 @@ SecGenie.ai Logging Package
 """
 
 from app.core.logging.config import (
-    setup_logging,
     get_logger,
+    setup_logging,
 )
 
-
 __all__ = [
-    "setup_logging",
     "get_logger",
+    "setup_logging",
 ]

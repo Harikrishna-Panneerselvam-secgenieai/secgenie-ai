@@ -5,7 +5,7 @@ Reusable SQLAlchemy model mixins.
 from __future__ import annotations
 
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from sqlalchemy import Boolean, DateTime, String, func
 from sqlalchemy.dialects.postgresql import UUID
@@ -101,7 +101,7 @@ class SoftDeleteMixin:
         """
 
         self.is_deleted = True
-        self.deleted_at = datetime.now(timezone.utc)
+        self.deleted_at = datetime.now(UTC)
         self.deleted_by = deleted_by
 
     def restore(self) -> None:

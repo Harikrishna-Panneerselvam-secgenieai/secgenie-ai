@@ -8,19 +8,14 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from sqlalchemy import Float
-from sqlalchemy import ForeignKey
-from sqlalchemy import String
-from sqlalchemy.orm import Mapped
-from sqlalchemy.orm import mapped_column
-from sqlalchemy.orm import relationship
+from sqlalchemy import Float, ForeignKey, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import BaseModel
 
-
 if TYPE_CHECKING:
-    from app.models.investigation import Investigation
     from app.models.evidence import Evidence
+    from app.models.investigation import Investigation
 
 
 class Finding(BaseModel):
@@ -81,12 +76,12 @@ class Finding(BaseModel):
     # Relationships
     # ---------------------------------------------------------
 
-    investigation: Mapped["Investigation"] = relationship(
+    investigation: Mapped[Investigation] = relationship(
         "Investigation",
         back_populates="findings",
     )
 
-    evidence: Mapped[list["Evidence"]] = relationship(
+    evidence: Mapped[list[Evidence]] = relationship(
         "Evidence",
         back_populates="finding",
         cascade="all, delete-orphan",

@@ -10,7 +10,7 @@ from __future__ import annotations
 import json
 import logging
 from datetime import UTC, datetime
-from typing import Any
+from typing import Any, ClassVar
 
 from app.core.logging.context import (
     get_correlation_id,
@@ -25,7 +25,7 @@ class JsonFormatter(logging.Formatter):
     """
 
     # Standard LogRecord attributes that should not be duplicated.
-    RESERVED_FIELDS = {
+    RESERVED_FIELDS: ClassVar[set[str]] = {
         "name",
         "msg",
         "args",
@@ -59,7 +59,9 @@ class JsonFormatter(logging.Formatter):
             "timestamp": datetime.fromtimestamp(
                 record.created,
                 tz=UTC,
-            ).isoformat(timespec="milliseconds").replace("+00:00", "Z"),
+            )
+            .isoformat(timespec="milliseconds")
+            .replace("+00:00", "Z"),
             "level": record.levelname,
             "message": record.getMessage(),
             "logger": record.name,
@@ -73,12 +75,17 @@ class JsonFormatter(logging.Formatter):
 
         # Include custom fields passed through logger(..., extra={...}).
         for key, value in record.__dict__.items():
-            if key not in self.RESERVED_FIELDS and key not in log_record:
+            if (
+                key not in self.RESERVED_FIELDS
+                and key not in log_record
+            ):
                 log_record[key] = value
 
         # Include exception information when available.
         if record.exc_info:
-            log_record["exception"] = self.formatException(record.exc_info)
+            log_record["exception"] = self.formatException(
+                record.exc_info
+            )
 
         return json.dumps(
             log_record,

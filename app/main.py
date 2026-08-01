@@ -3,11 +3,10 @@ SecGenie.ai Application Entry Point
 """
 
 from __future__ import annotations
-from fastapi import Body
-from fastapi import Body, FastAPI, HTTPException
+
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 
 from app.api.v1 import router as api_router
 from app.core.config import settings
@@ -15,7 +14,6 @@ from app.core.config.validators import validate_settings
 from app.core.exceptions import register_exception_handlers
 from app.core.logging import get_logger, setup_logging
 from app.core.middleware import register_middleware
-
 
 logger = get_logger(__name__)
 

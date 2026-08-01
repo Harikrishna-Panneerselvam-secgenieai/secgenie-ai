@@ -1,6 +1,6 @@
-from .config import settings, Settings
+from .config import Settings, settings
 
 __all__ = [
-    "settings",
     "Settings",
+    "settings",
 ]

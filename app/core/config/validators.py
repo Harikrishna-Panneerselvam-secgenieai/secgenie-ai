@@ -9,11 +9,13 @@ def validate_settings(settings: Settings) -> None:
     errors = []
 
     # Production JWT validation
-    if settings.app.environment == "production":
-        if not settings.jwt.secret_key:
-            errors.append(
-                "JWT secret key must be configured in production"
-            )
+    if (
+        settings.app.environment == "production"
+        and not settings.jwt.secret_key
+    ):
+        errors.append(
+            "JWT secret key must be configured in production"
+        )
 
     # Database validation
     if settings.database.port <= 0:

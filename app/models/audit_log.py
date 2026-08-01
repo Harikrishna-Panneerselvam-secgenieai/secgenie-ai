@@ -7,10 +7,8 @@ for security and compliance.
 
 from __future__ import annotations
 
-from sqlalchemy import JSON
-from sqlalchemy import String
-from sqlalchemy.orm import Mapped
-from sqlalchemy.orm import mapped_column
+from sqlalchemy import JSON, String
+from sqlalchemy.orm import Mapped, mapped_column
 
 from app.models.base import BaseModel
 

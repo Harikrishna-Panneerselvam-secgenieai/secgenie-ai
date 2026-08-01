@@ -1,6 +1,6 @@
-from app.models.investigation import Investigation
-from app.models.enums.investigation_status import InvestigationStatus
 from app.models.enums.investigation_priority import InvestigationPriority
+from app.models.enums.investigation_status import InvestigationStatus
+from app.models.investigation import Investigation
 
 
 def test_investigation_creation():

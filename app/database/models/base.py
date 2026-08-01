@@ -27,4 +27,3 @@ class Base(
     - Soft delete functionality
     """
 
-    pass

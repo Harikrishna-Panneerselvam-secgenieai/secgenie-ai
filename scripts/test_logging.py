@@ -7,6 +7,6 @@ logger = get_logger(__name__)
 logger.info("Application started")
 
 try:
-    1 / 0
+    _ = 1 / 0
 except ZeroDivisionError:
     logger.exception("Unexpected exception")

@@ -9,12 +9,9 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from sqlalchemy import String
-from sqlalchemy.orm import Mapped
-from sqlalchemy.orm import mapped_column
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import BaseModel
-
 
 if TYPE_CHECKING:
     from app.models.investigation import Investigation
@@ -47,7 +44,7 @@ class User(BaseModel):
         doc="User role.",
     )
 
-    investigations: Mapped[list["Investigation"]] = relationship(
+    investigations: Mapped[list[Investigation]] = relationship(
         "Investigation",
         back_populates="owner",
     )

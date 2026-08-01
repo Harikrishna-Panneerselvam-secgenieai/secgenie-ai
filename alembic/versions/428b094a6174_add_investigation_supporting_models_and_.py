@@ -6,15 +6,15 @@ Create Date: 2026-07-31 20:21:49.563598
 
 """
 
-from typing import Sequence, Union
+from collections.abc import Sequence
 
-from alembic import op
 import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
+from alembic import op
 
 revision: str = "428b094a6174"
-down_revision: Union[str, Sequence[str], None] = "0a44cc4bf1e8"
+down_revision: str | Sequence[str] | None = "0a44cc4bf1e8"
 branch_labels = None
 depends_on = None
 

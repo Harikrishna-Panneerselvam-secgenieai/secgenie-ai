@@ -9,7 +9,7 @@ from app.database.session.dependency import get_db_session
 
 __all__ = [
     "DATABASE_URL",
-    "engine",
     "async_session_factory",
+    "engine",
     "get_db_session",
 ]

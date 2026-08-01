@@ -10,16 +10,10 @@ from __future__ import annotations
 from datetime import datetime
 from typing import TYPE_CHECKING
 
-from sqlalchemy import DateTime
-from sqlalchemy import ForeignKey
-from sqlalchemy import JSON
-from sqlalchemy import String
-from sqlalchemy.orm import Mapped
-from sqlalchemy.orm import mapped_column
-from sqlalchemy.orm import relationship
+from sqlalchemy import JSON, DateTime, ForeignKey, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import BaseModel
-
 
 if TYPE_CHECKING:
     from app.models.investigation import Investigation
@@ -86,7 +80,7 @@ class InvestigationTask(BaseModel):
     # Relationship
     # ---------------------------------------------------------
 
-    investigation: Mapped["Investigation"] = relationship(
+    investigation: Mapped[Investigation] = relationship(
         "Investigation",
         back_populates="tasks",
     )

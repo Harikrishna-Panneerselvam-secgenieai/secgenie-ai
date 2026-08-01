@@ -11,4 +11,3 @@ class Base(DeclarativeBase):
     (directly or indirectly through BaseModel).
     """
 
-    pass

@@ -11,27 +11,19 @@ from datetime import datetime
 from typing import TYPE_CHECKING, Any
 from uuid import UUID
 
-from sqlalchemy import DateTime
-from sqlalchemy import Enum
-from sqlalchemy import ForeignKey
-from sqlalchemy import Index
-from sqlalchemy import JSON
-from sqlalchemy import String
-from sqlalchemy.orm import Mapped
-from sqlalchemy.orm import mapped_column
-from sqlalchemy.orm import relationship
+from sqlalchemy import JSON, DateTime, Enum, ForeignKey, Index, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import BaseModel
 from app.models.enums.investigation_priority import InvestigationPriority
 from app.models.enums.investigation_status import InvestigationStatus
 
-
 if TYPE_CHECKING:
-    from app.models.user import User
-    from app.models.finding import Finding
     from app.models.evidence import Evidence
+    from app.models.finding import Finding
     from app.models.investigation_task import InvestigationTask
     from app.models.timeline import InvestigationTimeline
+    from app.models.user import User
 
 
 class Investigation(BaseModel):
@@ -116,31 +108,31 @@ class Investigation(BaseModel):
     # Relationships
     # =====================================================
 
-    owner: Mapped["User | None"] = relationship(
+    owner: Mapped[User | None] = relationship(
         "User",
         foreign_keys=[owner_id],
         back_populates="investigations",
     )
 
-    findings: Mapped[list["Finding"]] = relationship(
+    findings: Mapped[list[Finding]] = relationship(
         "Finding",
         back_populates="investigation",
         cascade="all, delete-orphan",
     )
 
-    evidence: Mapped[list["Evidence"]] = relationship(
+    evidence: Mapped[list[Evidence]] = relationship(
         "Evidence",
         back_populates="investigation",
         cascade="all, delete-orphan",
     )
 
-    tasks: Mapped[list["InvestigationTask"]] = relationship(
+    tasks: Mapped[list[InvestigationTask]] = relationship(
         "InvestigationTask",
         back_populates="investigation",
         cascade="all, delete-orphan",
     )
 
-    timeline: Mapped[list["InvestigationTimeline"]] = relationship(
+    timeline: Mapped[list[InvestigationTimeline]] = relationship(
         "InvestigationTimeline",
         back_populates="investigation",
         cascade="all, delete-orphan",

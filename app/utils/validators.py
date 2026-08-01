@@ -16,7 +16,6 @@ import uuid
 from datetime import datetime
 from urllib.parse import urlparse
 
-
 # =============================================================================
 # Regular Expressions
 # =============================================================================
@@ -65,8 +64,10 @@ def validate_uuid(value: str) -> bool:
     try:
         uuid.UUID(str(value))
         return True
-    except (ValueError, TypeError):
-        raise ValueError(f"Invalid UUID: {value}")
+    except (ValueError, TypeError) as err:
+        raise ValueError(
+            f"Invalid UUID: {value}"
+        ) from err
 
 
 # =============================================================================
@@ -80,8 +81,10 @@ def validate_ip(value: str) -> bool:
     try:
         ipaddress.ip_address(value)
         return True
-    except ValueError:
-        raise ValueError(f"Invalid IP address: {value}")
+    except ValueError as err:
+        raise ValueError(
+            f"Invalid IP address: {value}"
+        ) from err
 
 
 # =============================================================================
@@ -189,5 +192,7 @@ def validate_timestamp(value: str) -> bool:
 
         return True
 
-    except ValueError:
-        raise ValueError(f"Invalid ISO-8601 timestamp: {value}")
+    except ValueError as err:
+        raise ValueError(
+            f"Invalid ISO-8601 timestamp: {value}"
+        ) from err

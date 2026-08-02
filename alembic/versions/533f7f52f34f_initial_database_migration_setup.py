@@ -1,14 +1,15 @@
 """Initial database migration setup
 
 Revision ID: 533f7f52f34f
-Revises: 
+Revises:
 Create Date: 2026-07-30 18:08:43.011349
 
 """
+
 from collections.abc import Sequence
 
 # revision identifiers, used by Alembic.
-revision: str = '533f7f52f34f'
+revision: str = "533f7f52f34f"
 down_revision: str | Sequence[str] | None = None
 branch_labels: str | Sequence[str] | None = None
 depends_on: str | Sequence[str] | None = None

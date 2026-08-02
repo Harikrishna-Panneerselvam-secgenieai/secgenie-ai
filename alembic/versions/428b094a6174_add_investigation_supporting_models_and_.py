@@ -64,7 +64,6 @@ def upgrade() -> None:
         unique=True,
     )
 
-
     # ---------------------------------------------------------
     # Create audit logs
     # ---------------------------------------------------------
@@ -102,14 +101,12 @@ def upgrade() -> None:
         sa.PrimaryKeyConstraint("id"),
     )
 
-
     op.create_index(
         "ix_audit_logs_user_id",
         "audit_logs",
         ["user_id"],
         unique=False,
     )
-
 
     # ---------------------------------------------------------
     # Create findings
@@ -154,13 +151,11 @@ def upgrade() -> None:
         sa.PrimaryKeyConstraint("id"),
     )
 
-
     op.create_index(
         "ix_findings_investigation_id",
         "findings",
         ["investigation_id"],
     )
-
 
     # ---------------------------------------------------------
     # Create investigation tasks
@@ -206,13 +201,11 @@ def upgrade() -> None:
         sa.PrimaryKeyConstraint("id"),
     )
 
-
     op.create_index(
         "ix_investigation_tasks_investigation_id",
         "investigation_tasks",
         ["investigation_id"],
     )
-
 
     # ---------------------------------------------------------
     # Create timeline
@@ -255,13 +248,11 @@ def upgrade() -> None:
         sa.PrimaryKeyConstraint("id"),
     )
 
-
     op.create_index(
         "ix_investigation_timelines_investigation_id",
         "investigation_timelines",
         ["investigation_id"],
     )
-
 
     # ---------------------------------------------------------
     # Create evidence
@@ -309,7 +300,6 @@ def upgrade() -> None:
         sa.PrimaryKeyConstraint("id"),
     )
 
-
     op.create_index(
         "ix_evidence_investigation_id",
         "evidence",
@@ -321,7 +311,6 @@ def upgrade() -> None:
         "evidence",
         ["finding_id"],
     )
-
 
     # ---------------------------------------------------------
     # IMPORTANT FIX
@@ -336,7 +325,6 @@ def upgrade() -> None:
         existing_nullable=True,
         postgresql_using="owner_id::uuid",
     )
-
 
     op.create_foreign_key(
         "fk_investigations_owner_id_users",

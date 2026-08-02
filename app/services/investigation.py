@@ -8,7 +8,6 @@ between API layer and repository layer.
 
 from __future__ import annotations
 
-from collections.abc import Sequence
 from datetime import UTC, datetime
 from uuid import UUID
 
@@ -74,7 +73,6 @@ class InvestigationService(BaseService):
         InvestigationStatus.CANCELLED: [],
     }
 
-
     def __init__(
         self,
         repository: InvestigationRepository,
@@ -88,7 +86,6 @@ class InvestigationService(BaseService):
         """
 
         self.repository = repository
-
 
     # ---------------------------------------------------------
     # Create Investigation
@@ -110,15 +107,10 @@ class InvestigationService(BaseService):
         System creates investigation record.
         """
 
-        investigation = Investigation(
+        return await self.repository.create(
             **data.model_dump(),
             status=InvestigationStatus.CREATED,
         )
-
-        return await self.repository.create(
-            investigation
-        )
-
 
     # ---------------------------------------------------------
     # Get Investigation
@@ -132,22 +124,17 @@ class InvestigationService(BaseService):
         Retrieve investigation by ID.
         """
 
-        investigation = await self.repository.get(
-            investigation_id
-        )
+        investigation = await self.repository.get(investigation_id)
 
         if not investigation:
-            raise InvestigationNotFoundError(
-                investigation_id
-            )
+            raise InvestigationNotFoundError(investigation_id)
 
         return investigation
-
 
     async def list_investigations(
         self,
         pagination: PaginationParams,
-    ) -> Sequence[Investigation]:
+    ) -> list[Investigation]:
         """
         Return paginated investigations.
         """
@@ -156,7 +143,6 @@ class InvestigationService(BaseService):
             offset=pagination.offset,
             limit=pagination.limit,
         )
-
 
     # ---------------------------------------------------------
     # Update Investigation
@@ -171,13 +157,9 @@ class InvestigationService(BaseService):
         Update investigation details.
         """
 
-        investigation = await self.get_investigation(
-            investigation_id
-        )
+        investigation = await self.get_investigation(investigation_id)
 
-        update_data = data.model_dump(
-            exclude_unset=True
-        )
+        update_data = data.model_dump(exclude_unset=True)
 
         for field, value in update_data.items():
             setattr(
@@ -186,10 +168,7 @@ class InvestigationService(BaseService):
                 value,
             )
 
-        return await self.repository.update(
-            investigation
-        )
-
+        return await self.repository.update(investigation)
 
     # ---------------------------------------------------------
     # Lifecycle Management
@@ -212,34 +191,24 @@ class InvestigationService(BaseService):
         COMPLETED -> RUNNING ❌
         """
 
-        investigation = await self.get_investigation(
-            investigation_id
-        )
+        investigation = await self.get_investigation(investigation_id)
 
         current_status = investigation.status
-
 
         allowed_states = self.STATUS_TRANSITIONS.get(
             current_status,
             [],
         )
 
-
         if new_status not in allowed_states:
-
             raise InvalidStatusTransitionError(
                 current_status,
                 new_status,
             )
 
-
         investigation.status = new_status
 
-
-        return await self.repository.update(
-            investigation
-        )
-
+        return await self.repository.update(investigation)
 
     # ---------------------------------------------------------
     # Start Investigation
@@ -268,12 +237,10 @@ class InvestigationService(BaseService):
             InvestigationStatus.QUEUED,
         )
 
-
         return await self.transition_status(
             investigation.id,
             InvestigationStatus.RUNNING,
         )
-
 
     # ---------------------------------------------------------
     # Complete Investigation
@@ -292,16 +259,9 @@ class InvestigationService(BaseService):
             InvestigationStatus.COMPLETED,
         )
 
+        investigation.completed_at = datetime.now(UTC)
 
-        investigation.completed_at = datetime.now(
-            UTC
-        )
-
-
-        return await self.repository.update(
-            investigation
-        )
-
+        return await self.repository.update(investigation)
 
     # ---------------------------------------------------------
     # Fail Investigation
@@ -318,23 +278,13 @@ class InvestigationService(BaseService):
         Stores failure reason for audit/debugging.
         """
 
-        investigation = await self.get_investigation(
-            investigation_id
-        )
-
+        investigation = await self.get_investigation(investigation_id)
 
         investigation.failure_reason = reason
 
+        investigation.status = InvestigationStatus.FAILED
 
-        investigation.status = (
-            InvestigationStatus.FAILED
-        )
-
-
-        return await self.repository.update(
-            investigation
-        )
-
+        return await self.repository.update(investigation)
 
     # ---------------------------------------------------------
     # Retry Handling
@@ -353,35 +303,18 @@ class InvestigationService(BaseService):
         Prevents unlimited retries.
         """
 
-        investigation = await self.get_investigation(
-            investigation_id
-        )
-
+        investigation = await self.get_investigation(investigation_id)
 
         retry_count = investigation.retry_count or 0
 
-
         if retry_count >= max_retry:
+            raise InvestigationRetryLimitExceededError(investigation_id)
 
-            raise InvestigationRetryLimitExceededError(
-                investigation_id
-            )
+        investigation.retry_count = retry_count + 1
 
+        investigation.status = InvestigationStatus.QUEUED
 
-        investigation.retry_count = (
-            retry_count + 1
-        )
-
-
-        investigation.status = (
-            InvestigationStatus.QUEUED
-        )
-
-
-        return await self.repository.update(
-            investigation
-        )
-
+        return await self.repository.update(investigation)
 
     # ---------------------------------------------------------
     # Cancel Investigation
@@ -400,7 +333,6 @@ class InvestigationService(BaseService):
             InvestigationStatus.CANCELLED,
         )
 
-
     # ---------------------------------------------------------
     # Delete / Restore
     # ---------------------------------------------------------
@@ -413,14 +345,9 @@ class InvestigationService(BaseService):
         Soft delete investigation.
         """
 
-        investigation = await self.get_investigation(
-            investigation_id
-        )
+        investigation = await self.get_investigation(investigation_id)
 
-        await self.repository.delete(
-            investigation
-        )
-
+        await self.repository.delete(investigation)
 
     async def restore_investigation(
         self,
@@ -430,10 +357,6 @@ class InvestigationService(BaseService):
         Restore soft deleted investigation.
         """
 
-        investigation = await self.get_investigation(
-            investigation_id
-        )
+        investigation = await self.get_investigation(investigation_id)
 
-        return await self.repository.restore(
-            investigation
-        )
+        return await self.repository.restore(investigation)

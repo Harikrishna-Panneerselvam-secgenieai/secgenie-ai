@@ -1,24 +1,23 @@
-"""                FastAPI Router
-                     |
-                     |
-              dependencies.py
-                     |
-        +------------+-------------+
-        |            |             |
-   Database      Repository     Services
-    Session          |             |
-        |            |             |
-    PostgreSQL   SQLAlchemy    Business Logic
-                     
-                     |
-                     |
-               AI Providers
-                     |
-        +------------+------------+
-        |                         |
-      OpenAI                   Claude
-      Local LLM                Azure OpenAI"""
+"""FastAPI Router
+                  |
+                  |
+           dependencies.py
+                  |
+     +------------+-------------+
+     |            |             |
+Database      Repository     Services
+ Session          |             |
+     |            |             |
+ PostgreSQL   SQLAlchemy    Business Logic
 
+                  |
+                  |
+            AI Providers
+                  |
+     +------------+------------+
+     |                         |
+   OpenAI                   Claude
+   Local LLM                Azure OpenAI"""
 
 from collections.abc import AsyncGenerator
 

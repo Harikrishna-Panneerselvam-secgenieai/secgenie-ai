@@ -15,6 +15,7 @@ from app.utils.validators import (
 # UUID Validation
 # =============================================================================
 
+
 def test_validate_uuid_valid():
     assert validate_uuid("550e8400-e29b-41d4-a716-446655440000") is True
 
@@ -27,6 +28,7 @@ def test_validate_uuid_invalid():
 # =============================================================================
 # IP Address Validation
 # =============================================================================
+
 
 def test_validate_ipv4():
     assert validate_ip("192.168.1.10") is True
@@ -45,6 +47,7 @@ def test_validate_invalid_ip():
 # Email Validation
 # =============================================================================
 
+
 def test_validate_email_valid():
     assert validate_email("admin@example.com") is True
 
@@ -57,6 +60,7 @@ def test_validate_email_invalid():
 # =============================================================================
 # URL Validation
 # =============================================================================
+
 
 def test_validate_url_valid():
     assert validate_url("https://example.com") is True
@@ -71,6 +75,7 @@ def test_validate_url_invalid():
 # CVE Validation
 # =============================================================================
 
+
 def test_validate_cve_valid():
     assert validate_cve("CVE-2025-12345") is True
 
@@ -83,6 +88,7 @@ def test_validate_cve_invalid():
 # =============================================================================
 # MITRE Validation
 # =============================================================================
+
 
 def test_validate_mitre_attack_valid():
     assert validate_mitre_id("T1059") is True
@@ -105,6 +111,7 @@ def test_validate_mitre_invalid():
 # Hostname Validation
 # =============================================================================
 
+
 def test_validate_hostname_valid():
     assert validate_hostname("server01.company.local") is True
 
@@ -117,6 +124,7 @@ def test_validate_hostname_invalid():
 # =============================================================================
 # Timestamp Validation
 # =============================================================================
+
 
 def test_validate_timestamp_valid():
     assert validate_timestamp("2026-07-30T12:00:00Z") is True

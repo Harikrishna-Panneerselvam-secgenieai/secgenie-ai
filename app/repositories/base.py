@@ -17,7 +17,7 @@ Features
 
 from __future__ import annotations
 
-from typing import Any, Generic, TypeVar
+from typing import Any, Generic, TypeVar, cast
 
 from sqlalchemy import Select, asc, desc, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -85,13 +85,8 @@ class BaseRepository(Generic[ModelType]):
         Exclude soft deleted rows unless requested.
         """
 
-        if (
-            hasattr(self.model, "deleted_at")
-            and not include_deleted
-        ):
-            query = query.where(
-                self.model.deleted_at.is_(None)
-            )
+        if hasattr(self.model, "deleted_at") and not include_deleted:
+            query = query.where(self.model.deleted_at.is_(None))
 
         return query
 
@@ -101,10 +96,7 @@ class BaseRepository(Generic[ModelType]):
         return self.model.__name__
 
     def __repr__(self) -> str:
-        return (
-            f"{self.__class__.__name__}"
-            f"(model={self.model_name})"
-        )
+        return f"{self.__class__.__name__}(model={self.model_name})"
 
     async def create(
         self,
@@ -122,7 +114,6 @@ class BaseRepository(Generic[ModelType]):
         await self.session.refresh(instance)
 
         return instance
-
 
     async def update(
         self,
@@ -216,7 +207,6 @@ class BaseRepository(Generic[ModelType]):
 
         await self.session.refresh(instance)
 
-
     async def get_by_id(
         self,
         id: Any,
@@ -227,9 +217,7 @@ class BaseRepository(Generic[ModelType]):
         Return a model by primary key.
         """
 
-        query = self._base_query().where(
-            self.model.id == id
-        )
+        query = self._base_query().where(self.model.id == id)
 
         query = self._apply_soft_delete_filter(
             query,
@@ -238,7 +226,10 @@ class BaseRepository(Generic[ModelType]):
 
         result = await self.session.execute(query)
 
-        return result.scalar_one_or_none()
+        return cast(
+            ModelType | None,
+            result.scalar_one_or_none(),
+        )
 
     async def get_one(
         self,
@@ -263,7 +254,10 @@ class BaseRepository(Generic[ModelType]):
 
         result = await self.session.execute(query)
 
-        return result.scalar_one_or_none()
+        return cast(
+            ModelType | None,
+            result.scalar_one_or_none(),
+        )
 
     async def exists(
         self,
@@ -273,9 +267,7 @@ class BaseRepository(Generic[ModelType]):
         Return True if a matching record exists.
         """
 
-        return (
-            await self.get_one(**filters)
-        ) is not None
+        return (await self.get_one(**filters)) is not None
 
     async def count(
         self,
@@ -286,9 +278,7 @@ class BaseRepository(Generic[ModelType]):
         Return total number of records.
         """
 
-        query = select(
-            func.count()
-        ).select_from(self.model)
+        query = select(func.count()).select_from(self.model)
 
         query = self._apply_soft_delete_filter(
             query,
@@ -311,11 +301,6 @@ class BaseRepository(Generic[ModelType]):
     ) -> list[ModelType]:
         """
         Return a list of records.
-
-        Supports:
-        - filtering
-        - sorting
-        - pagination
         """
 
         query = self._base_query()
@@ -332,15 +317,24 @@ class BaseRepository(Generic[ModelType]):
 
         if order_by:
             column = getattr(self.model, order_by)
-
-            query = query.order_by(
-                desc(column)
-                if descending
-                else asc(column)
-            )
+            query = query.order_by(desc(column) if descending else asc(column))
 
         query = query.offset(offset).limit(limit)
 
         result = await self.session.execute(query)
 
         return list(result.scalars().all())
+
+    async def get(
+        self,
+        entity_id: Any,
+        *,
+        include_deleted: bool = False,
+    ) -> ModelType | None:
+        """
+        Retrieve a model by primary key.
+        """
+        return await self.get_by_id(
+            entity_id,
+            include_deleted=include_deleted,
+        )

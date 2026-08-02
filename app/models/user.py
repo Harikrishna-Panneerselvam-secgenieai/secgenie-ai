@@ -50,8 +50,4 @@ class User(BaseModel):
     )
 
     def __repr__(self) -> str:
-        return (
-            f"User("
-            f"id={self.id}, "
-            f"email={self.email!r})"
-        )
+        return f"User(id={self.id}, email={self.email!r})"

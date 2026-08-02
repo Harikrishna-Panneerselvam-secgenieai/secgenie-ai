@@ -18,7 +18,6 @@ DIRECTORIES = [
     # APP
     # ==========================
     "app",
-
     # API
     "app/api",
     "app/api/v1",
@@ -33,7 +32,6 @@ DIRECTORIES = [
     "app/api/dependencies",
     "app/api/routers",
     "app/api/errors",
-
     # Agents
     "app/agents",
     "app/agents/base",
@@ -50,7 +48,6 @@ DIRECTORIES = [
     "app/agents/report",
     "app/agents/memory",
     "app/agents/validator",
-
     # Core
     "app/core",
     "app/core/config",
@@ -61,7 +58,6 @@ DIRECTORIES = [
     "app/core/security",
     "app/core/dependencies",
     "app/core/telemetry",
-
     # Database
     "app/database",
     "app/database/models",
@@ -70,10 +66,8 @@ DIRECTORIES = [
     "app/database/migrations",
     "app/database/seed",
     "app/database/factories",
-
     # Domain
     "app/domain",
-
     "app/domain/investigation",
     "app/domain/investigation/entities",
     "app/domain/investigation/services",
@@ -81,7 +75,6 @@ DIRECTORIES = [
     "app/domain/investigation/value_objects",
     "app/domain/investigation/events",
     "app/domain/investigation/exceptions",
-
     "app/domain/asset",
     "app/domain/asset/entities",
     "app/domain/asset/services",
@@ -89,7 +82,6 @@ DIRECTORIES = [
     "app/domain/asset/value_objects",
     "app/domain/asset/events",
     "app/domain/asset/exceptions",
-
     "app/domain/finding",
     "app/domain/finding/entities",
     "app/domain/finding/services",
@@ -97,7 +89,6 @@ DIRECTORIES = [
     "app/domain/finding/value_objects",
     "app/domain/finding/events",
     "app/domain/finding/exceptions",
-
     "app/domain/report",
     "app/domain/report/entities",
     "app/domain/report/services",
@@ -105,7 +96,6 @@ DIRECTORIES = [
     "app/domain/report/value_objects",
     "app/domain/report/events",
     "app/domain/report/exceptions",
-
     "app/domain/user",
     "app/domain/user/entities",
     "app/domain/user/services",
@@ -113,7 +103,6 @@ DIRECTORIES = [
     "app/domain/user/value_objects",
     "app/domain/user/events",
     "app/domain/user/exceptions",
-
     "app/domain/risk",
     "app/domain/risk/entities",
     "app/domain/risk/services",
@@ -121,7 +110,6 @@ DIRECTORIES = [
     "app/domain/risk/value_objects",
     "app/domain/risk/events",
     "app/domain/risk/exceptions",
-
     # Services
     "app/services",
     "app/services/investigation",
@@ -130,7 +118,6 @@ DIRECTORIES = [
     "app/services/auth",
     "app/services/workflow",
     "app/services/notification",
-
     # Workflow
     "app/workflow",
     "app/workflow/engine",
@@ -141,7 +128,6 @@ DIRECTORIES = [
     "app/workflow/retry",
     "app/workflow/state",
     "app/workflow/events",
-
     # Providers
     "app/providers",
     "app/providers/openai",
@@ -149,7 +135,6 @@ DIRECTORIES = [
     "app/providers/gemini",
     "app/providers/ollama",
     "app/providers/azure_openai",
-
     # Integrations
     "app/integrations",
     "app/integrations/tenable",
@@ -162,7 +147,6 @@ DIRECTORIES = [
     "app/integrations/servicenow",
     "app/integrations/slack",
     "app/integrations/email",
-
     # Shared
     "app/schemas",
     "app/models",
@@ -171,7 +155,6 @@ DIRECTORIES = [
     "app/events",
     "app/utils",
     "app/prompts",
-
     # ==========================
     # DOCS
     # ==========================
@@ -185,7 +168,6 @@ DIRECTORIES = [
     "docs/diagrams",
     "docs/prompts",
     "docs/standards",
-
     # ==========================
     # TESTS
     # ==========================
@@ -199,7 +181,6 @@ DIRECTORIES = [
     "tests/security",
     "tests/performance",
     "tests/e2e",
-
     # ==========================
     # DEPLOYMENT
     # ==========================
@@ -209,7 +190,6 @@ DIRECTORIES = [
     "deployment/terraform",
     "deployment/github_actions",
     "deployment/monitoring",
-
     # ==========================
     # ROOT SUPPORT
     # ==========================

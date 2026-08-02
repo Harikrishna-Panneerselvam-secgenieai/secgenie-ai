@@ -68,9 +68,7 @@ MAX_FILE_SIZE_MB = 100
 # REGULAR EXPRESSIONS
 # ============================================================================
 
-EMAIL_REGEX = (
-    r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
-)
+EMAIL_REGEX = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
 
 USERNAME_REGEX = r"^[A-Za-z0-9_.-]+$"
 
@@ -86,30 +84,24 @@ __all__ = [
     "MAX_TITLE_LENGTH",
     "MIN_DESCRIPTION_LENGTH",
     "MAX_DESCRIPTION_LENGTH",
-
     # User
     "MIN_USERNAME_LENGTH",
     "MAX_USERNAME_LENGTH",
     "EMAIL_MAX_LENGTH",
     "PASSWORD_MIN_LENGTH",
     "PASSWORD_MAX_LENGTH",
-
     # Identifiers
     "UUID_LENGTH",
-
     # Pagination
     "MIN_PAGE",
     "MIN_PAGE_SIZE",
     "MAX_PAGE_SIZE",
-
     # Collections
     "MAX_TAGS",
     "MAX_ITEMS_PER_REQUEST",
-
     # Files
     "MAX_FILENAME_LENGTH",
     "MAX_FILE_SIZE_MB",
-
     # Regex
     "EMAIL_REGEX",
     "USERNAME_REGEX",

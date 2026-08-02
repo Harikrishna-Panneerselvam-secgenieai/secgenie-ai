@@ -80,33 +80,25 @@ __all__ = [
     # Authentication
     "AUTH_SCHEME_BEARER",
     "AUTHORIZATION_HEADER",
-
     # Token types
     "ACCESS_TOKEN",
     "REFRESH_TOKEN",
-
     # Password validation
     "PASSWORD_MIN_LENGTH",
     "PASSWORD_MAX_LENGTH",
-
     # Username validation
     "USERNAME_MIN_LENGTH",
     "USERNAME_MAX_LENGTH",
-
     # Email validation
     "EMAIL_MAX_LENGTH",
-
     # Headers
     "HEADER_X_API_KEY",
     "HEADER_X_FORWARDED_FOR",
     "HEADER_X_REAL_IP",
-
     # MIME types
     "CONTENT_TYPE_JSON",
-
     # Hashing
     "DEFAULT_PASSWORD_HASH_SCHEME",
-
     # Limits
     "MAX_LOGIN_ATTEMPTS",
 ]

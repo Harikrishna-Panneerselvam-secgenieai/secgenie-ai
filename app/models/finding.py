@@ -89,8 +89,5 @@ class Finding(BaseModel):
 
     def __repr__(self) -> str:
         return (
-            f"Finding("
-            f"id={self.id}, "
-            f"title={self.title!r}, "
-            f"severity={self.severity!r})"
+            f"Finding(id={self.id}, title={self.title!r}, severity={self.severity!r})"
         )

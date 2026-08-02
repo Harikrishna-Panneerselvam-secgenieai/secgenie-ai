@@ -85,7 +85,6 @@ __all__ = [
     # Default configuration
     "DEFAULT_LOG_LEVEL",
     "DEFAULT_LOGGER_NAME",
-
     # Log fields
     "LOG_TIMESTAMP",
     "LOG_LEVEL",
@@ -94,22 +93,18 @@ __all__ = [
     "LOG_MODULE",
     "LOG_FUNCTION",
     "LOG_LINE",
-
     # Context fields
     "REQUEST_ID",
     "CORRELATION_ID",
     "EXECUTION_ID",
-
     # Headers
     "HEADER_REQUEST_ID",
     "HEADER_CORRELATION_ID",
     "HEADER_EXECUTION_ID",
-
     # Extra keys
     "EXTRA_REQUEST_ID",
     "EXTRA_CORRELATION_ID",
     "EXTRA_EXECUTION_ID",
-
     # Logger names
     "APP_LOGGER",
     "API_LOGGER",
@@ -117,7 +112,6 @@ __all__ = [
     "SECURITY_LOGGER",
     "AGENT_LOGGER",
     "AUDIT_LOGGER",
-
     # Formats
     "LOG_FORMAT_JSON",
     "LOG_FORMAT_TEXT",

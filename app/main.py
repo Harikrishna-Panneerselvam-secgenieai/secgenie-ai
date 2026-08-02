@@ -29,9 +29,7 @@ async def lifespan(application: FastAPI):
     # Validate configuration
     validate_settings(settings)
 
-    logger.info(
-        "Application configuration validation completed"
-    )
+    logger.info("Application configuration validation completed")
 
     # Future startup initialization:
     #
@@ -66,26 +64,15 @@ def create_app() -> FastAPI:
     # --------------------------------------------------------------
     setup_logging()
 
-    logger.info(
-        "Creating FastAPI application instance"
-    )
+    logger.info("Creating FastAPI application instance")
 
     application = FastAPI(
         title=settings.app.app_name,
-        description=(
-            "AI Powered Multi-Agent Cybersecurity "
-            "Investigation Platform"
-        ),
+        description=("AI Powered Multi-Agent Cybersecurity Investigation Platform"),
         version=settings.app.app_version,
-        docs_url="/docs"
-        if settings.api.docs_enabled
-        else None,
-        redoc_url="/redoc"
-        if settings.api.redoc_enabled
-        else None,
-        openapi_url="/openapi.json"
-        if settings.api.openapi_enabled
-        else None,
+        docs_url="/docs" if settings.api.docs_enabled else None,
+        redoc_url="/redoc" if settings.api.redoc_enabled else None,
+        openapi_url="/openapi.json" if settings.api.openapi_enabled else None,
         lifespan=lifespan,
     )
 
@@ -145,9 +132,7 @@ def create_app() -> FastAPI:
             "status": "healthy",
         }
 
-    logger.info(
-        "FastAPI application created successfully"
-    )
+    logger.info("FastAPI application created successfully")
 
     return application
 

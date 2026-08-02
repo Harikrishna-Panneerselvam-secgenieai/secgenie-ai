@@ -10,4 +10,3 @@ class Base(DeclarativeBase):
     All database models should inherit from this class
     (directly or indirectly through BaseModel).
     """
-

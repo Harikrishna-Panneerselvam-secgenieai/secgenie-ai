@@ -28,12 +28,20 @@ from typing import Any, Generic, TypeVar
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.models.base import BaseModel
+from app.repositories.base import BaseRepository
 from app.services.exceptions import (
     EntityNotFoundError,
 )
 
-ModelType = TypeVar("ModelType")
-RepositoryType = TypeVar("RepositoryType")
+ModelType = TypeVar(
+    "ModelType",
+    bound=BaseModel,
+)
+RepositoryType = TypeVar(
+    "RepositoryType",
+    bound=BaseRepository[Any],
+)
 
 
 class BaseService(
@@ -57,7 +65,7 @@ class BaseService(
 
     def __init__(
         self,
-        repository: RepositoryType,
+        repository: BaseRepository[ModelType],
         session: AsyncSession,
     ) -> None:
         """
@@ -71,7 +79,7 @@ class BaseService(
                 SQLAlchemy async database session.
         """
 
-        self.repository = repository
+        self.repository: BaseRepository[ModelType] = repository
         self.session = session
 
     # ------------------------------------------------------------------
@@ -204,7 +212,7 @@ class BaseService(
         )
 
         entity = await self.repository.create(
-            data,
+            **data.model_dump(),
         )
 
         await self.commit()
@@ -231,7 +239,7 @@ class BaseService(
 
         updated_entity = await self.repository.update(
             entity,
-            data,
+            **data.model_dump(exclude_unset=True),
         )
 
         await self.commit()

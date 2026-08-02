@@ -140,6 +140,7 @@ async def test_get_recent(
 
     mock_session.execute.assert_called_once()
 
+
 @pytest.mark.asyncio
 async def test_get_by_owner(
     repository: InvestigationRepository,

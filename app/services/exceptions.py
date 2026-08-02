@@ -13,6 +13,10 @@ They are handled by API exception handlers and converted
 into appropriate HTTP responses.
 """
 
+from __future__ import annotations
+
+from uuid import UUID
+
 
 class ServiceError(Exception):
     """
@@ -43,12 +47,8 @@ class EntityNotFoundError(ServiceError):
         entity_name: str,
         entity_id: str | None = None,
     ) -> None:
-
         if entity_id:
-            message = (
-                f"{entity_name} with id '{entity_id}' "
-                "was not found"
-            )
+            message = f"{entity_name} with id '{entity_id}' was not found"
         else:
             message = f"{entity_name} was not found"
 
@@ -107,15 +107,10 @@ class OperationFailedError(ServiceError):
         operation: str,
         reason: str | None = None,
     ) -> None:
-
         if reason:
-            message = (
-                f"Operation '{operation}' failed: {reason}"
-            )
+            message = f"Operation '{operation}' failed: {reason}"
         else:
-            message = (
-                f"Operation '{operation}' failed"
-            )
+            message = f"Operation '{operation}' failed"
 
         super().__init__(message)
 
@@ -124,32 +119,36 @@ class OperationFailedError(ServiceError):
 
 
 class DuplicateEntityError(ServiceError):
-    """
-    Raised when attempting to create a duplicate entity.
+    """Raised when attempting to create a duplicate entity."""
 
-    Examples:
-        Duplicate investigation name.
-        Duplicate evidence hash.
-        Duplicate agent execution.
-    """
-
-    def __init__(
-        self,
-        entity_name: str,
-        identifier: str | None = None,
-    ) -> None:
-
-        if identifier:
-            message = (
-                f"{entity_name} already exists "
-                f"with identifier '{identifier}'"
-            )
-        else:
-            message = (
-                f"{entity_name} already exists"
-            )
-
-        super().__init__(message)
-
+    def __init__(self, entity_name: str, identifier: str | None = None):
+        ...
         self.entity_name = entity_name
         self.identifier = identifier
+
+
+class InvestigationNotFoundError(EntityNotFoundError):
+    """Raised when an investigation cannot be found."""
+
+    def __init__(self, investigation_id: UUID) -> None:
+        super().__init__(
+            entity_name="Investigation",
+            entity_id=str(investigation_id),
+        )
+
+
+class InvalidStatusTransitionError(BusinessRuleViolationError):
+    """Raised when an invalid investigation status transition is attempted."""
+
+    def __init__(self, current_status: str, target_status: str) -> None:
+        super().__init__(
+            f"Cannot transition investigation from "
+            f"'{current_status}' to '{target_status}'."
+        )
+
+
+class InvestigationRetryLimitExceededError(BusinessRuleViolationError):
+    """Raised when the retry limit for an investigation has been exceeded."""
+
+    def __init__(self, investigation_id: UUID) -> None:
+        super().__init__(f"Retry limit exceeded for investigation {investigation_id}.")

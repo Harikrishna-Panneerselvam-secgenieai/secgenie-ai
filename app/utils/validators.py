@@ -20,9 +20,7 @@ from urllib.parse import urlparse
 # Regular Expressions
 # =============================================================================
 
-EMAIL_REGEX = re.compile(
-    r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
-)
+EMAIL_REGEX = re.compile(r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$")
 
 CVE_REGEX = re.compile(
     r"^CVE-\d{4}-\d{4,}$",
@@ -48,6 +46,7 @@ HOSTNAME_REGEX = re.compile(
 # UUID
 # =============================================================================
 
+
 def validate_uuid(value: str) -> bool:
     """
     Validate a UUID string.
@@ -65,14 +64,13 @@ def validate_uuid(value: str) -> bool:
         uuid.UUID(str(value))
         return True
     except (ValueError, TypeError) as err:
-        raise ValueError(
-            f"Invalid UUID: {value}"
-        ) from err
+        raise ValueError(f"Invalid UUID: {value}") from err
 
 
 # =============================================================================
 # IP Address
 # =============================================================================
+
 
 def validate_ip(value: str) -> bool:
     """
@@ -82,14 +80,13 @@ def validate_ip(value: str) -> bool:
         ipaddress.ip_address(value)
         return True
     except ValueError as err:
-        raise ValueError(
-            f"Invalid IP address: {value}"
-        ) from err
+        raise ValueError(f"Invalid IP address: {value}") from err
 
 
 # =============================================================================
 # Email
 # =============================================================================
+
 
 def validate_email(value: str) -> bool:
     """
@@ -104,6 +101,7 @@ def validate_email(value: str) -> bool:
 # =============================================================================
 # URL
 # =============================================================================
+
 
 def validate_url(value: str) -> bool:
     """
@@ -124,6 +122,7 @@ def validate_url(value: str) -> bool:
 # CVE
 # =============================================================================
 
+
 def validate_cve(value: str) -> bool:
     """
     Validate a CVE identifier.
@@ -141,6 +140,7 @@ def validate_cve(value: str) -> bool:
 # =============================================================================
 # MITRE ATT&CK
 # =============================================================================
+
 
 def validate_mitre_id(value: str) -> bool:
     """
@@ -161,6 +161,7 @@ def validate_mitre_id(value: str) -> bool:
 # Hostname
 # =============================================================================
 
+
 def validate_hostname(value: str) -> bool:
     """
     Validate hostname or FQDN.
@@ -174,6 +175,7 @@ def validate_hostname(value: str) -> bool:
 # =============================================================================
 # Timestamp
 # =============================================================================
+
 
 def validate_timestamp(value: str) -> bool:
     """
@@ -193,6 +195,4 @@ def validate_timestamp(value: str) -> bool:
         return True
 
     except ValueError as err:
-        raise ValueError(
-            f"Invalid ISO-8601 timestamp: {value}"
-        ) from err
+        raise ValueError(f"Invalid ISO-8601 timestamp: {value}") from err

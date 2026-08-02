@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 import time
-from collections.abc import Callable
+from collections.abc import Awaitable, Callable
 
-from fastapi import FastAPI, Request, Response
+from fastapi import FastAPI, Request
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.middleware.cors import CORSMiddleware
+from starlette.responses import Response
 
 from app.core.constants.api import (
     HEADER_CORRELATION_ID,
@@ -34,7 +35,7 @@ class LoggingContextMiddleware(BaseHTTPMiddleware):
     async def dispatch(
         self,
         request: Request,
-        call_next: Callable[[Request], Response],
+        call_next: Callable[[Request], Awaitable[Response]],
     ) -> Response:
         """
         Process a request, measure execution time,

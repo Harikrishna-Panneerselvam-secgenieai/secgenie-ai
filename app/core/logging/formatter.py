@@ -75,17 +75,12 @@ class JsonFormatter(logging.Formatter):
 
         # Include custom fields passed through logger(..., extra={...}).
         for key, value in record.__dict__.items():
-            if (
-                key not in self.RESERVED_FIELDS
-                and key not in log_record
-            ):
+            if key not in self.RESERVED_FIELDS and key not in log_record:
                 log_record[key] = value
 
         # Include exception information when available.
         if record.exc_info:
-            log_record["exception"] = self.formatException(
-                record.exc_info
-            )
+            log_record["exception"] = self.formatException(record.exc_info)
 
         return json.dumps(
             log_record,

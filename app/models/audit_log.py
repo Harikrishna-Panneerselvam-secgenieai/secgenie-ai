@@ -54,8 +54,4 @@ class AuditLog(BaseModel):
     )
 
     def __repr__(self) -> str:
-        return (
-            f"AuditLog("
-            f"id={self.id}, "
-            f"action={self.action!r})"
-        )
+        return f"AuditLog(id={self.id}, action={self.action!r})"

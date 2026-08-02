@@ -71,8 +71,4 @@ class InvestigationTimeline(BaseModel):
     )
 
     def __repr__(self) -> str:
-        return (
-            f"InvestigationTimeline("
-            f"id={self.id}, "
-            f"type={self.event_type!r})"
-        )
+        return f"InvestigationTimeline(id={self.id}, type={self.event_type!r})"

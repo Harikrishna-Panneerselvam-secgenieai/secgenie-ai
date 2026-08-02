@@ -102,16 +102,13 @@ class InvestigationRepository(
         - RUNNING
         """
 
-        query = (
-            select(Investigation)
-            .where(
-                Investigation.status.in_(
-                    [
-                        InvestigationStatus.CREATED,
-                        InvestigationStatus.QUEUED,
-                        InvestigationStatus.RUNNING,
-                    ]
-                )
+        query = select(Investigation).where(
+            Investigation.status.in_(
+                [
+                    InvestigationStatus.CREATED,
+                    InvestigationStatus.QUEUED,
+                    InvestigationStatus.RUNNING,
+                ]
             )
         )
 
@@ -155,13 +152,7 @@ class InvestigationRepository(
             )
         )
 
-        query = (
-            query
-            .order_by(
-                Investigation.created_at.desc()
-            )
-            .limit(limit)
-        )
+        query = query.order_by(Investigation.created_at.desc()).limit(limit)
 
         result = await self.session.execute(query)
 
@@ -178,11 +169,7 @@ class InvestigationRepository(
         """
 
         query = (
-            select(Investigation)
-            .order_by(
-                Investigation.created_at.desc()
-            )
-            .limit(limit)
+            select(Investigation).order_by(Investigation.created_at.desc()).limit(limit)
         )
 
         query = self._apply_soft_delete_filter(
@@ -205,9 +192,7 @@ class InvestigationRepository(
         """
 
         query = (
-            select(
-                func.count()
-            )
+            select(func.count())
             .select_from(Investigation)
             .where(
                 Investigation.status == status,
@@ -241,9 +226,7 @@ class InvestigationRepository(
         }
 
         for status in InvestigationStatus:
-            statistics[
-                status.value
-            ] = await self.count_by_status(
+            statistics[status.value] = await self.count_by_status(
                 status,
                 include_deleted=include_deleted,
             )
@@ -262,12 +245,9 @@ class InvestigationRepository(
         within a time range.
         """
 
-        query = (
-            select(Investigation)
-            .where(
-                Investigation.completed_at >= start_date,
-                Investigation.completed_at <= end_date,
-            )
+        query = select(Investigation).where(
+            Investigation.completed_at >= start_date,
+            Investigation.completed_at <= end_date,
         )
 
         query = self._apply_soft_delete_filter(
@@ -297,13 +277,9 @@ class InvestigationRepository(
             hours=hours,
         )
 
-        query = (
-            select(Investigation)
-            .where(
-                Investigation.status
-                == InvestigationStatus.RUNNING,
-                Investigation.updated_at < threshold,
-            )
+        query = select(Investigation).where(
+            Investigation.status == InvestigationStatus.RUNNING,
+            Investigation.updated_at < threshold,
         )
 
         query = self._apply_soft_delete_filter(

@@ -4,7 +4,6 @@ from app.models.investigation import Investigation
 
 
 def test_investigation_creation():
-
     investigation = Investigation(
         title="Failed Login Investigation",
         description="Multiple failed login attempts detected",
@@ -19,45 +18,28 @@ def test_investigation_creation():
 
     assert investigation.title == "Failed Login Investigation"
 
-    assert (
-        investigation.status
-        == InvestigationStatus.CREATED
-    )
+    assert investigation.status == InvestigationStatus.CREATED
 
-    assert (
-        investigation.priority
-        == InvestigationPriority.HIGH
-    )
+    assert investigation.priority == InvestigationPriority.HIGH
 
     assert investigation.owner_id == "user-123"
 
-    assert (
-        investigation.investigation_metadata["source"]
-        == "SIEM"
-    )
+    assert investigation.investigation_metadata["source"] == "SIEM"
 
 
 def test_investigation_soft_delete():
-
-    investigation = Investigation(
-        title="Test Investigation"
-    )
+    investigation = Investigation(title="Test Investigation")
 
     assert investigation.is_deleted is False
 
-    investigation.soft_delete(
-        deleted_by="admin"
-    )
+    investigation.soft_delete(deleted_by="admin")
 
     assert investigation.is_deleted is True
     assert investigation.deleted_by == "admin"
 
 
 def test_investigation_restore():
-
-    investigation = Investigation(
-        title="Restore Test"
-    )
+    investigation = Investigation(title="Restore Test")
 
     investigation.soft_delete()
 

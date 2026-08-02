@@ -30,10 +30,7 @@ DATABASE_URL = (
 
 
 # Set database URL dynamically
-config.set_main_option(
-    "sqlalchemy.url",
-    DATABASE_URL.replace("%", "%%")
-)
+config.set_main_option("sqlalchemy.url", DATABASE_URL.replace("%", "%%"))
 
 
 # SQLAlchemy metadata for Alembic autogenerate
@@ -51,9 +48,7 @@ def run_migrations_offline() -> None:
         url=url,
         target_metadata=target_metadata,
         literal_binds=True,
-        dialect_opts={
-            "paramstyle": "named"
-        },
+        dialect_opts={"paramstyle": "named"},
     )
 
     with context.begin_transaction():
@@ -86,9 +81,7 @@ async def run_migrations_online() -> None:
     )
 
     async with connectable.connect() as connection:
-        await connection.run_sync(
-            do_run_migrations
-        )
+        await connection.run_sync(do_run_migrations)
 
     await connectable.dispose()
 

@@ -31,6 +31,7 @@ _execution_id: ContextVar[str | None] = ContextVar(
 # Request ID
 # --------------------------------------------------------------------------
 
+
 def set_request_id(request_id: str) -> None:
     """Store the current request ID."""
     _request_id.set(request_id)
@@ -49,6 +50,7 @@ def clear_request_id() -> None:
 # --------------------------------------------------------------------------
 # Correlation ID
 # --------------------------------------------------------------------------
+
 
 def set_correlation_id(correlation_id: str) -> None:
     """Store the current correlation ID."""
@@ -69,6 +71,7 @@ def clear_correlation_id() -> None:
 # Execution ID
 # --------------------------------------------------------------------------
 
+
 def set_execution_id(execution_id: str) -> None:
     """Store the current execution ID."""
     _execution_id.set(execution_id)
@@ -87,6 +90,7 @@ def clear_execution_id() -> None:
 # --------------------------------------------------------------------------
 # Utilities
 # --------------------------------------------------------------------------
+
 
 def clear_context() -> None:
     """

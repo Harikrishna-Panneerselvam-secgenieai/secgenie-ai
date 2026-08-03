@@ -1,0 +1,121 @@
+# ===========================
+# Git
+# ===========================
+.git
+.gitignore
+
+# ===========================
+# Python
+# ===========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.pyd
+*.pyo
+
+# ===========================
+# Virtual Environments
+# ===========================
+.venv/
+venv/
+env/
+ENV/
+
+# ===========================
+# Python Tool Caches
+# ===========================
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pytype/
+.pyre/
+.tox/
+.nox/
+.hypothesis/
+
+# ===========================
+# Coverage Reports
+# ===========================
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# ===========================
+# Build & Distribution
+# ===========================
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# ===========================
+# IDEs & Editors
+# ===========================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ===========================
+# macOS
+# ===========================
+.DS_Store
+
+# ===========================
+# Logs
+# ===========================
+*.log
+logs/
+
+# ===========================
+# Environment Files
+# ===========================
+.env
+.env.*
+!.env.example
+
+# ===========================
+# Local Databases
+# ===========================
+*.db
+*.sqlite
+*.sqlite3
+
+# ===========================
+# Docker
+# ===========================
+docker-compose.override.yml
+
+# ===========================
+# Documentation
+# ===========================
+site/
+docs/_build/
+
+# ===========================
+# Temporary Files
+# ===========================
+tmp/
+temp/
+.cache/
+
+# ===========================
+# Jupyter
+# ===========================
+.ipynb_checkpoints/
+
+# ===========================
+# Node (if frontend added later)
+# ===========================
+node_modules/
+
+# ===========================
+# Miscellaneous
+# ===========================
+*.bak
+*.tmp
+*.orig
